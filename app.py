@@ -61,11 +61,12 @@ def api_get_users():
 @app.route("/api/users", methods=["POST"])
 def api_add_user():
     data = request.get_json()
+    id = data["id"]
     name = data["name"]
     email = data["email"]
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO users (name, email) VALUES (%s, %s)", (name, email))
+    cursor.execute("INSERT INTO users (id, name, email) VALUES (%s, %s, %s)", (id, name, email))
     conn.commit()
     cursor.close()
     conn.close()
