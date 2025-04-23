@@ -4,31 +4,6 @@ from pymongo import MongoClient
 from bson import ObjectId
 from bson.errors import InvalidId
 
-@app.route("/api/users/<string:id>", methods=["PUT"])
-def api_update_user(id):
-    data = request.get_json()
-    try:
-        # Coba convert ke ObjectId, kalau gagal berarti UUID biasa
-        users_collection.update_one(
-            {"_id": ObjectId(id)},
-            {"$set": {"name": data["name"], "email": data["email"]}}
-        )
-    except (InvalidId, TypeError):
-        users_collection.update_one(
-            {"_id": id},  # UUID string
-            {"$set": {"name": data["name"], "email": data["email"]}}
-        )
-    return jsonify({"message": "User updated"}), 200
-
-@app.route("/api/users/<string:id>", methods=["DELETE"])
-def api_delete_user(id):
-    try:
-        users_collection.delete_one({"_id": ObjectId(id)})
-    except (InvalidId, TypeError):
-        users_collection.delete_one({"_id": id})
-    return jsonify({"message": "User deleted"}), 200
-
-
 app = Flask(__name__)
 CORS(app)
 
