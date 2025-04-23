@@ -37,7 +37,7 @@ def add():
 
 @app.route("/delete/<string:id>")
 def delete(id):
-    users_collection.delete_one({"_id": ObjectId(id)})
+    users_collection.delete_one({"_id": id})
     return redirect("/")
 
 # 📱 API Routes (Tetap bisa diakses, jika diperlukan)
