@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Railway</title>
+</head>
+<body>
+    <h1>📋 Daftar Users</h1>
+    <ul>
+        {% for user in users %}
+            <li>{{ user[0] }}. {{ user[1] }} ({{ user[2] }}) 
+                <a href="/delete/{{ user[0] }}">Hapus</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <h2>➕ Tambah User</h2>
+    <form method="post" action="/add">
+        Nama: <input type="text" name="name"><br>
+        Email: <input type="text" name="email"><br>
+        <input type="submit" value="Tambah">
+    </form>
+</body>
+</html>
