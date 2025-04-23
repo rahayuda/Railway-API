@@ -71,5 +71,28 @@ def api_add_user():
     conn.close()
     return jsonify({"message": "User added"}), 201
 
+@app.route("/api/users/<int:id>", methods=["PUT"])
+def api_update_user(id):
+    data = request.get_json()
+    name = data["name"]
+    email = data["email"]
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET name = %s, email = %s WHERE id = %s", (name, email, id))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return jsonify({"message": "User updated"}), 200
+
+@app.route("/api/users/<int:id>", methods=["DELETE"])
+def api_delete_user(id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM users WHERE id = %s", (id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return jsonify({"message": "User deleted"}), 200
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
