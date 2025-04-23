@@ -49,10 +49,14 @@ def api_get_users():
 @app.route("/api/users", methods=["POST"])
 def api_add_user():
     data = request.get_json()
-    result = users_collection.insert_one({
+    # Gunakan ID yang dikirimkan dari Android (jika ada)
+    user_id = data.get("id", None)  # Jika tidak ada ID, MongoDB akan generate
+    user = {
+        "_id": user_id or None,  # Jika user_id ada, gunakan itu
         "name": data["name"],
         "email": data["email"]
-    })
+    }
+    result = users_collection.insert_one(user)
     return jsonify({"message": "User added", "id": str(result.inserted_id)}), 201
 
 @app.route("/api/users/<string:id>", methods=["PUT"])
