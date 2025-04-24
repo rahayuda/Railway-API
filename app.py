@@ -8,10 +8,9 @@ app = Flask(__name__)
 CORS(app)
 
 # 🔌 Koneksi ke MongoDB Railway
-# client = MongoClient("mongodb://mongo:efjIOPvBPZPKeHRQeFGcgGUQnjauiuWF@gondola.proxy.rlwy.net:47608")
 client = MongoClient("mongodb://mongo:efjIOPvBPZPKeHRQeFGcgGUQnjauiuWF@mongodb.railway.internal:27017")
 
-db = client["MongoRail"]  # Ganti jika nama databasenya berbeda
+db = client["MongoRail-1"]  # Ganti jika nama databasenya berbeda
 users_collection = db["users"]
 
 # 🔧 Helper untuk ubah ObjectId ke string
