@@ -40,10 +40,7 @@ def add():
 
 @app.route("/delete/<string:id>")
 def delete(id):
-    try:
-        users_collection.delete_one({"_id": ObjectId(id)})
-    except (InvalidId, TypeError):
-        pass  # Atau beri pesan error/logging jika perlu
+    users_collection.delete_one({"_id": ObjectId(id)})
     return redirect("/")
 
 # 📱 API Routes (Tetap bisa diakses, jika diperlukan)
