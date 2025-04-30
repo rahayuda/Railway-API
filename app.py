@@ -10,12 +10,11 @@ CORS(app)
 # 🔌 Koneksi ke MongoDB Railway
 client = MongoClient("mongodb://mongo:QXGKDUFqrYyhoCIgKsaewCBzHIWJgdLi@mongodb-1.railway.internal:27017") 
 
-db = client["MongoRail"]  # Ganti jika nama databasenya berbeda
+db = client["MongoRail"]  
 users_collection = db["users"]
 
 # 🔧 Helper untuk ubah ObjectId ke string
 def serialize_user(user):
-    # Mengubah data MongoDB agar sesuai dengan format template HTML
     return [
         str(user["_id"]),  # user[0] adalah id
         user["name"],      # user[1] adalah name
@@ -26,7 +25,6 @@ def serialize_user(user):
 @app.route("/")
 def index():
     users = list(users_collection.find())
-    # Menyesuaikan format data sebelum dikirim ke template HTML
     serialized_users = [serialize_user(user) for user in users]
     return render_template("index.html", users=serialized_users)
 
@@ -45,7 +43,7 @@ def delete(id):
         users_collection.delete_one({"_id": id})  # Untuk UUID string
     return redirect("/")
 
-# 📱 API Routes (Tetap bisa diakses, jika diperlukan)
+# 📱 API Routes
 @app.route("/api/users", methods=["GET"])
 def api_get_users():
     users = list(users_collection.find())
@@ -54,10 +52,9 @@ def api_get_users():
 @app.route("/api/users", methods=["POST"])
 def api_add_user():
     data = request.get_json()
-    # Gunakan ID yang dikirimkan dari Android (jika ada)
-    user_id = data.get("id", None)  # Jika tidak ada ID, MongoDB akan generate
+    user_id = data.get("id", None)  
     user = {
-        "_id": user_id or None,  # Jika user_id ada, gunakan itu
+        "_id": user_id or None,  
         "name": data["name"],
         "email": data["email"]
     }
@@ -70,7 +67,6 @@ from bson.errors import InvalidId
 def api_update_user(id):
     data = request.get_json()
     try:
-        # Coba convert ke ObjectId, kalau gagal berarti UUID biasa
         users_collection.update_one(
             {"_id": ObjectId(id)},
             {"$set": {"name": data["name"], "email": data["email"]}}
